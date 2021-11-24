@@ -15,12 +15,12 @@ app.get("/", (req, res) => {
     rollbar.info("HTML file served successfully");
   });
 
-// app.get("/styles", (req, res) => {
-//   res.sendFile(path.join(__dirname, "public/index.css"));
-// });
-// app.get("/js", (req, res) => {
-//   res.sendFile(path.join(__dirname, "public/index.js"));
-// });
+app.get("/styles", (req, res) => {
+  res.sendFile(path.join(__dirname, "public/index.css"));
+});
+app.get("/js", (req, res) => {
+  res.sendFile(path.join(__dirname, "public/index.js"));
+});
 
 app.get('/api/robots', (req, res) => {
     try {
