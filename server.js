@@ -10,10 +10,10 @@ app.use(express.static("public"));
 
 app.use(express.json())
 
-app.get("/", (req, res) => {
-    res.sendFile("index.html");
-    rollbar.info("HTML file served successfully");
-  });
+// app.get("/", (req, res) => {
+//     res.sendFile("index.html");
+//     rollbar.info("HTML file served successfully");
+//   });
 
 app.get("/styles", (req, res) => {
   res.sendFile(path.join(__dirname, "public/index.css"));
@@ -84,6 +84,7 @@ app.get('/api/player', (req, res) => {
 })
 
 
+app.use(rollbar.errorHandler());
 const port = process.env.PORT || 3000
 
 app.listen(port, () => {
