@@ -4,7 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "node index.js",
+    "start": "node server.js",
     "test": "jest"
   },
   "keywords": [],
@@ -14,6 +14,7 @@
     "@types/jest": "^27.0.2",
     "@types/selenium-webdriver": "^4.0.16",
     "chromedriver": "^95.0.0",
+    "cors": "^2.8.5",
     "dotenv": "^10.0.0",
     "env": "^0.0.2",
     "express": "^4.17.1",
