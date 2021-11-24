@@ -12,7 +12,6 @@ app.use(express.json())
 
 app.get("/", (req, res) => {
     res.sendFile("index.html");
-    rollbar.info("HTML file served successfully");
   });
 
 app.get("/styles", (req, res) => {
