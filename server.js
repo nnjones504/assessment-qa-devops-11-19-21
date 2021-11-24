@@ -3,16 +3,28 @@ const path = require("path");
 const app = express();
 const { bots, playerRecord } = require("./data");
 const { shuffleArray } = require("./utils");
-const cors = require("cors");
+
 
 // Server setup for rollbar
 require("dotenv").config();
 app.use(express.static("public"));
 
+// include and initialize the rollbar library with your access token
+var Rollbar = require('rollbar')
+var rollbar = new Rollbar({
+  accessToken: '98cbc6e03b374f5cb7503860b7105ded',
+  captureUncaught: true,
+  captureUnhandledRejections: true,
+})
+
+// record a generic message and send it to Rollbar
+rollbar.log('Hello world!')
+
 app.use(express.json());
 
 app.get("/", (req, res) => {
   res.sendFile("index.html");
+  rollbar.info("HTML file served successfully");
 });
 
 app.get("/styles", (req, res) => {
@@ -25,9 +37,11 @@ app.get("/js", (req, res) => {
 app.get("/api/robots", (req, res) => {
   try {
     res.status(200).send(botsArr);
+    rollbar.info("User was able to see bots")
   } catch (error) {
     console.log("ERROR GETTING BOTS", error);
     res.sendStatus(400);
+    rollbar.error("Did not show bots")
   }
 });
 
@@ -36,9 +50,11 @@ app.get("/api/robots/five", (req, res) => {
     let shuffled = shuffleArray(bots);
     let choices = shuffled.slice(0, 5);
     let compDuo = shuffled.slice(6, 8);
+    rollbar.info("Bots were shuffled")
     res.status(200).send({ choices, compDuo });
   } catch (error) {
     console.log("ERROR GETTING FIVE BOTS", error);
+    rollbar.error("Bots did not shuffle")
     res.sendStatus(400);
   }
 });
@@ -72,9 +88,11 @@ app.post("/api/duel", (req, res) => {
     if (compHealthAfterAttack > playerHealthAfterAttack) {
       playerRecord.losses++;
       res.status(200).send("You lost!");
+      rollbar.info("User lost the duel")
     } else {
       playerRecord.losses++;
       res.status(200).send("You won!");
+      rollbar.info("User won the duel")
     }
   } catch (error) {
     console.log("ERROR DUELING", error);
