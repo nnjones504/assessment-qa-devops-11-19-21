@@ -4,12 +4,16 @@ const app = express()
 const {bots, playerRecord} = require('./data')
 const {shuffleArray} = require('./utils')
 
-// Server setup
+// Server setup for rollbar
 require('dotenv').config()
+app.use(express.static("public"));
 
 app.use(express.json())
 
-app.use(express.static("public"));
+app.get("/", (req, res) => {
+    res.sendFile("index.html");
+    rollbar.info("HTML file served successfully");
+  });
 
 app.get("/styles", (req, res) => {
   res.sendFile(path.join(__dirname, "public/index.css"));
@@ -78,6 +82,7 @@ app.get('/api/player', (req, res) => {
         res.sendStatus(400)
     }
 })
+
 
 const port = process.env.PORT || 3000
 
